@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LittleLemon"
         tools:targetApi="31">
+
         <activity
             android:name=".LittleLemon"
             android:exported="true"
