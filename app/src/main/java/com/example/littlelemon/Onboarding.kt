@@ -36,7 +36,7 @@ import com.example.littlelemon.ui.theme.LittleLemonTheme
 
 
 @Composable
-fun Onboarding() {
+fun Onboarding(callback: ()->Unit ) {
     Column(
 
            // .padding(start = 12.dp, end = 12.dp, top = 16.dp, bottom = 16.dp)
@@ -55,7 +55,9 @@ fun Onboarding() {
         }
         Column {
             Button(
-                onClick = {},
+                onClick = {
+                    callback()
+                },
                 shape = RoundedCornerShape(20.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Yellow)
             ) {
@@ -98,7 +100,7 @@ private object TextTextFieldSnippet {
         TextField(
             value = text,
             onValueChange = { text = it },
-            label = { Text("$label") }
+            label = { Text(label) }
         )
     }
 
@@ -122,6 +124,6 @@ private fun OnboardingHeader() {
 @Composable
 fun OnboardingPreview2() {
     LittleLemonTheme {
-        Onboarding()
+        Onboarding({})
     }
 }

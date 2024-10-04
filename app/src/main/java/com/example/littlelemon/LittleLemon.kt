@@ -21,7 +21,8 @@ class LittleLemon : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Onboarding()
+                    Navigationapp()
+
                 }
             }
         }
@@ -35,6 +36,6 @@ class LittleLemon : ComponentActivity() {
 @Composable
 fun LittleLemonPreview() {
     LittleLemonTheme {
-        Onboarding()
+        Onboarding({})
     }
 }
