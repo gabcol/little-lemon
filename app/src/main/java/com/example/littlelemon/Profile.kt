@@ -1,6 +1,6 @@
 package com.example.littlelemon
 
- import androidx.compose.foundation.Image
+ import android.content.SharedPreferences
  import androidx.compose.foundation.background
  import androidx.compose.foundation.layout.Column
  import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,10 +13,24 @@ package com.example.littlelemon
  import androidx.compose.ui.text.font.FontWeight
  import androidx.compose.ui.unit.dp
  import androidx.compose.ui.unit.sp
-
+ import kotlinx.serialization.encodeToString
+ import kotlinx.serialization.*
+ import kotlinx.serialization.json.Json
 
 @Composable
-fun Profile(firstName : String, lastName: String, email: String) {
+fun Profile(sharedPreferences: SharedPreferences) {
+
+    val jstr = """
+        {
+          "firstName" : "Gabriele",
+          "lastName" : "Test",
+          "email" : "gabtest@test.com"
+        }
+    """.trimIndent()
+val jsonString = sharedPreferences.getString("userprofile", jstr).toString()
+
+
+   val userdata =   Json.decodeFromString<UserProfile>(jsonString)
 
     Column(
     ) {
@@ -32,11 +46,11 @@ fun Profile(firstName : String, lastName: String, email: String) {
     }
     Column {
        // Present Text to display the user’s first name
-        Text(text = firstName)
+        Text(text = userdata.firstName)
           //      Present Text to display the user’s last name
-        Text(text = lastName)
+        Text(text = userdata.lastName)
            //     Present Text to display the user’s email address
-        Text(text = email)
+        Text(text = userdata.email)
 
     }
     Column {

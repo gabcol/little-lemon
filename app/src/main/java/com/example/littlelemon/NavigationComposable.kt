@@ -8,13 +8,13 @@ import androidx.navigation.compose.rememberNavController
 
 @Composable
 //fun Navigationapp(isUserLoggedIn : Boolean, callback: () ->  Unit )
-fun NavigationComposable( isUserLoggedIn: Boolean, sharedPreferences: SharedPreferences)
+fun NavigationComposable(isUserLoggedIn: Boolean?, sharedPreferences: SharedPreferences)
 {
 
     val navController = rememberNavController()
     var destination = "home"
 
-    if (!isUserLoggedIn ){
+    if (!isUserLoggedIn!!){
         destination = "onboarding"
     }
 
@@ -36,7 +36,7 @@ fun NavigationComposable( isUserLoggedIn: Boolean, sharedPreferences: SharedPref
 
         composable("profile") {
 
-            Profile("Pippo", "Franco", "test@email.com")
+            Profile( sharedPreferences)
 
         }
     }

@@ -7,25 +7,21 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.lifecycleScope
-import androidx.room.Room
 
 import com.example.littlelemon.ui.theme.LittleLemonTheme
-import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.engine.android.Android
-
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.request.get
-import io.ktor.http.ContentType
-import io.ktor.serialization.kotlinx.json.json
-import kotlinx.coroutines.launch
+//import io.ktor.client.HttpClient
+//import io.ktor.client.call.body
+//import io.ktor.client.engine.android.Android
+//
+//import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+//import io.ktor.client.request.get
+//import io.ktor.http.ContentType
+//import io.ktor.serialization.kotlinx.json.json
+//import kotlinx.coroutines.launch
 
 class LittleLemon : ComponentActivity() {
 
@@ -103,10 +99,10 @@ class LittleLemon : ComponentActivity() {
 //}
 
 
-    fun isUserLoggedIn(): Boolean {
+    fun isUserLoggedIn(): Boolean? {
         // check shared preferences
-        userLoggedInLiveData.value
-        return false
+
+        return userLoggedInLiveData.value
     }
 
 

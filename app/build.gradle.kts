@@ -2,8 +2,13 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
-   // id("org.jetbrains.kotlin.plugin.compose")
+    id("org.jetbrains.kotlin.plugin.compose")
+  //  kotlin("jvm") version "2.0.21"
+  //  kotlin("plugin.serialization") version "2.0.21"
+    id("org.jetbrains.kotlin.plugin.serialization") // version "1.9.23" apply false
 }
+
+
 
 android {
     namespace = "com.example.myapplication"
@@ -12,7 +17,7 @@ android {
     defaultConfig {
         applicationId = "com.example.myapplication"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -39,7 +44,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.5"
+        kotlinCompilerExtensionVersion = "1.5.13"
     }
     packaging {
         resources {
@@ -67,17 +72,16 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:2.6.1")
     //kapt("androidx.room:room-compiler:2.6.1")
 
-    implementation("io.ktor:ktor-client-core:2.3.5")
-    implementation("io.ktor:ktor-client-cio:2.3.5")
-    implementation("io.ktor:ktor-client-logging:2.3.5")
-    implementation("io.ktor:ktor-client-content-negotiation:2.3.5")
-    implementation("io.ktor:ktor-client-auth:2.3.5")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.5")
-    // implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+//    implementation("io.ktor:ktor-client-core:3.0.0")
+//    implementation("io.ktor:ktor-client-cio:3.0.0")
+//    implementation("io.ktor:ktor-client-logging:3.0.0")
+//    implementation("io.ktor:ktor-client-content-negotiation:3.0.0")
+//    implementation("io.ktor:ktor-client-auth:3.0.0")
+//    implementation("io.ktor:ktor-serialization-kotlinx-json:3.0.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
 
-
-    implementation("io.ktor:ktor-client-android:2.3.5")
-    implementation("io.ktor:ktor-client-serialization:2.3.5")
+//    implementation("io.ktor:ktor-client-android:3.0.0")
+//    implementation("io.ktor:ktor-client-serialization:3.0.0")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
 
@@ -90,8 +94,5 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-
-
-
 
 }

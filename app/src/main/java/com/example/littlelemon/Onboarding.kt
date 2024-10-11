@@ -36,12 +36,17 @@ import com.example.myapplication.R
 
 
 
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.encodeToString
+
+
+
 @Composable
 fun Onboarding(sharedPreferences: SharedPreferences, callback: ()->Unit ) {
 
     var message = remember { mutableStateOf("") }
 
-  //  message = "Registration unsuccessful. Please enter all data."
 
     val firstName = remember { mutableStateOf("") }
     val lastName = remember { mutableStateOf("") }
@@ -76,13 +81,15 @@ fun Onboarding(sharedPreferences: SharedPreferences, callback: ()->Unit ) {
                        return@Button
                    }
 
+                    val userdata = UserProfile(firstName = firstName.value, lastName= lastName.value, email = email.value)
 
-
+                    val userProfile =  Json.encodeToString(userdata)
 
 
 
                     sharedPreferences.edit(commit = true){
                         putBoolean("userloggedin", true)
+                        putString("userprofile", userProfile)
                     }
 
 
@@ -175,3 +182,4 @@ fun OnboardingPreview2() {
       //  Onboarding({})
     }
 }
+
