@@ -1,6 +1,7 @@
 package com.example.littlelemon
 
 
+import android.content.SharedPreferences
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -14,11 +15,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -29,16 +28,26 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.littlelemon.TextFormattingTextFieldSnippet.PasswordTextField
-import com.example.littlelemon.TextTextFieldSnippet.SimpleFilledTextFieldSample
+import androidx.core.content.edit
+import com.example.littlelemon.EmailTextFieldSnippet.SimpleEmailField
+import com.example.littlelemon.TextTextFieldSnippet.SimpleTextField
 import com.example.littlelemon.ui.theme.LittleLemonTheme
+import com.example.myapplication.R
 
 
 
 @Composable
-fun Onboarding(callback: ()->Unit ) {
-    Column(
+fun Onboarding(sharedPreferences: SharedPreferences, callback: ()->Unit ) {
 
+    var message = remember { mutableStateOf("") }
+
+  //  message = "Registration unsuccessful. Please enter all data."
+
+    val firstName = remember { mutableStateOf("") }
+    val lastName = remember { mutableStateOf("") }
+    val email = remember { mutableStateOf("") }
+
+    Column(
            // .padding(start = 12.dp, end = 12.dp, top = 16.dp, bottom = 16.dp)
     ) {
         Column {
@@ -49,17 +58,41 @@ fun Onboarding(callback: ()->Unit ) {
             Text(text = "Let's get to know you")
         }
         Column {
-            SimpleFilledTextFieldSample("First Name")
-            SimpleFilledTextFieldSample("Last name")
-            PasswordTextField()
+            SimpleTextField(label = "First Name", firstName.value) { firstName.value = it }
+            SimpleTextField(label = "Last name" , lastName.value) { lastName.value= it }
+            SimpleEmailField(label = "Last name" , email.value) { email.value = it }
+            // PasswordTextField()
         }
         Column {
             Button(
                 onClick = {
-                    callback()
+
+                    // Validate registration form
+                    //  firstName.isBlank()
+
+                   if(firstName.value.isEmpty() || lastName.value.isEmpty() || email.value.isEmpty()) {
+
+                       message.value = "Registration unsuccessful. Please enter all data."
+                       return@Button
+                   }
+
+
+
+
+
+
+                    sharedPreferences.edit(commit = true){
+                        putBoolean("userloggedin", true)
+                    }
+
+
+
+
+                    callback() // go back to home
                 },
                 shape = RoundedCornerShape(20.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Yellow)
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Yellow),
+               // enabled = (!firstName.value.isEmpty() && !lastName.value.isEmpty() && !email.value.isEmpty())
             ) {
                 Text(
                     text = "Register",
@@ -69,43 +102,58 @@ fun Onboarding(callback: ()->Unit ) {
                 )
             }
         }
+        Column {
+            Text(text = message.value)
+        }
     }
 }
-
-private object TextFormattingTextFieldSnippet {
-
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    fun PasswordTextField() {
-        var password by rememberSaveable { mutableStateOf("") }
-
-        TextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Enter password") },
-            visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-        )
-    }
-
-}
+//
+//private object TextFormattingTextFieldSnippet {
+//
+//    @OptIn(ExperimentalMaterial3Api::class)
+//    @Composable
+//    fun PasswordTextField() {
+//        var password by rememberSaveable { mutableStateOf("") }
+//
+//        TextField(
+//            value = password,
+//            onValueChange = { password = it },
+//            label = { Text("Enter password") },
+//            visualTransformation = PasswordVisualTransformation(),
+//            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+//        )
+//    }
+//
+//}
 
 private object TextTextFieldSnippet {
-
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun SimpleFilledTextFieldSample(label: String) {
-        var text by remember { mutableStateOf(" ") }
+    fun SimpleTextField(label: String, text: String, textUpdate: (String)->Unit) {
+
 
         TextField(
             value = text,
-            onValueChange = { text = it },
-            label = { Text(label) }
+            onValueChange = textUpdate,
+           // label = { Text(label) }
         )
     }
-
 }
 
+private object EmailTextFieldSnippet {
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    fun SimpleEmailField(label: String, email: String, emailUpdate: (String)->Unit) {
+       // var email by remember { mutableStateOf(" ") }
+
+        TextField(
+            value = email,
+            onValueChange = emailUpdate,
+          //  label = { Text(label) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+        )
+    }
+}
 
 
 
@@ -113,7 +161,7 @@ private object TextTextFieldSnippet {
 private fun OnboardingHeader() {
     Column {
         Image(
-            painter = painterResource(id = R.drawable.logo),
+            painter = painterResource(id = R.drawable.logo), //(id = R.drawable.logo),
             contentDescription = "Header Image",
             modifier = Modifier.clip(RoundedCornerShape(10.dp) )
         )
@@ -124,6 +172,6 @@ private fun OnboardingHeader() {
 @Composable
 fun OnboardingPreview2() {
     LittleLemonTheme {
-        Onboarding({})
+      //  Onboarding({})
     }
 }
