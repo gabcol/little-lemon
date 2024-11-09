@@ -24,7 +24,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,11 +31,8 @@ import androidx.core.content.edit
 import com.example.littlelemon.EmailTextFieldSnippet.SimpleEmailField
 import com.example.littlelemon.TextTextFieldSnippet.SimpleTextField
 import com.example.littlelemon.ui.theme.LittleLemonTheme
-import com.example.myapplication.R
 
 
-
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
 
@@ -167,11 +163,11 @@ private object EmailTextFieldSnippet {
 @Composable
 private fun OnboardingHeader() {
     Column {
-        Image(
-            painter = painterResource(id = R.drawable.logo), //(id = R.drawable.logo),
-            contentDescription = "Header Image",
-            modifier = Modifier.clip(RoundedCornerShape(10.dp) )
-        )
+//        Image(
+//            painter = painterResource(id = R.drawable.logo), //(id = R.drawable.logo),
+//            contentDescription = "Header Image",
+//            modifier = Modifier.clip(RoundedCornerShape(10.dp) )
+//        )
     }
 }
 

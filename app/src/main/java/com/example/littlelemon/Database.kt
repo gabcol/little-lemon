@@ -12,14 +12,15 @@ import androidx.room.RoomDatabase
 
 
 
-@Database(entities = [MenuItem::class], version = 1)
-abstract class AppDatabase  : RoomDatabase()    {
+@Database(entities = [MenuItemRoom::class], version = 1)
+abstract class MenuDatabase  : RoomDatabase()    {
     abstract fun menuItemDao(): MenuItemDao
 
 }
 
+
 @Entity
-data class MenuItem (
+data class MenuItemRoom (
     @PrimaryKey val id: Int,
     val title: String,
     val description: String,
@@ -30,13 +31,17 @@ data class MenuItem (
 
 @Dao
 interface MenuItemDao   {
-    @Query("SELECT * FROM MenuItem")
-    fun getAll(): LiveData<List<MenuItem>>
+    @Query("SELECT * FROM MenuItemRoom")
+    fun getAll(): LiveData<List<MenuItemRoom>>
 
     @Insert
-    fun insertAll(vararg menuItems: MenuItem)
+    fun insertAll( vararg menuItems: MenuItemRoom)
 
-    @Query("SELECT (SELECT COUNT(*) FROM MenuItem) == 0")
+    @Query("SELECT (SELECT COUNT(*) FROM MenuItemRoom) == 0")
     fun isEmpty(): Boolean
+
+    @Query("SELECT (SELECT COUNT(*) FROM MenuItemRoom)")
+    fun tablesize(): Int
+
 }
 

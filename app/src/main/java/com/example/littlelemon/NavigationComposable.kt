@@ -5,10 +5,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.room.Database
 
 @Composable
-//fun Navigationapp(isUserLoggedIn : Boolean, callback: () ->  Unit )
-fun NavigationComposable(isUserLoggedIn: Boolean?, sharedPreferences: SharedPreferences)
+fun NavigationComposable(isUserLoggedIn: Boolean?, sharedPreferences: SharedPreferences, database: MenuDatabase)
 {
 
     val navController = rememberNavController()
@@ -23,7 +23,9 @@ fun NavigationComposable(isUserLoggedIn: Boolean?, sharedPreferences: SharedPref
 
         composable("home") {
 
-                Home()
+                Home(database){
+                    navController.navigate("profile" )
+                }
         }
 
         composable("onboarding") {
@@ -36,7 +38,7 @@ fun NavigationComposable(isUserLoggedIn: Boolean?, sharedPreferences: SharedPref
 
         composable("profile") {
 
-            Profile( sharedPreferences)
+            Profile(sharedPreferences, {navController.navigate("onboarding") }  )
 
         }
     }
