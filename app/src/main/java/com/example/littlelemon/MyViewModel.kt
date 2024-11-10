@@ -16,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MyViewModel(application: Application) : AndroidViewModel(application) {
+
     private val database: MenuDatabase
 
     init {
@@ -30,18 +31,19 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
         return database.menuItemDao().getAll()
     }
 
-    fun fetchMenuDataIfNeeded() {
+    fun fetchMenuData() {
         viewModelScope.launch(Dispatchers.IO) {
             if (database.menuItemDao().isEmpty()) {
                 saveMenuToDatabase(
                     database,
-                    fetchMenu("https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json")
+
+                    fetchMenuFromURL("https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json")
                 )
             }
         }
     }
 
-    suspend fun fetchMenu(url: String): List<MenuItemFromJason> {
+    private suspend fun fetchMenuFromURL(url: String): List<MenuItemFromJason> {
         val httpClient = HttpClient(Android){
             install(ContentNegotiation){
                 json(contentType = ContentType("text", "plain"))
@@ -50,6 +52,8 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
         val  httpResponse: MenuFromJason = httpClient.get(url).body()
         return httpResponse.menu
     }
+
+
 
 
     fun saveMenuToDatabase(database: MenuDatabase,  menuItemsNetwork: List<MenuItemFromJason>) {

@@ -1,26 +1,12 @@
 package com.example.littlelemon
 
-
- // import androidx.compose.ui.platform.LocalContext
-// import androidx.room.Room
-// import io.ktor.client.HttpClient
-// import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-// import io.ktor.client.call.body
-// import io.ktor.client.engine.android.Android
-// import io.ktor.client.request.get
-// import io.ktor.http.ContentType
-// import io.ktor.serialization.kotlinx.json.json
-// import androidx.lifecycle.MutableLiveData
-// import androidx.lifecycle.lifecycleScope
-// import kotlinx.coroutines.launch
- //import androidx.compose.runtime.livedata.observeAsState
-
  import android.util.Log
  import androidx.compose.foundation.Image
  import androidx.compose.foundation.background
  import androidx.compose.foundation.clickable
  import androidx.compose.foundation.horizontalScroll
  import androidx.compose.foundation.layout.Arrangement
+ import androidx.compose.foundation.layout.Box
  import androidx.compose.foundation.layout.Column
  import androidx.compose.foundation.layout.Row
  import androidx.compose.foundation.layout.Spacer
@@ -34,9 +20,9 @@ package com.example.littlelemon
  import androidx.compose.foundation.shape.RoundedCornerShape
  import androidx.compose.foundation.verticalScroll
  import androidx.compose.material.icons.Icons
+ import androidx.compose.material.icons.filled.AccountCircle
  import androidx.compose.material.icons.filled.Search
  import androidx.compose.material3.Button
- import androidx.compose.material3.ButtonColors
  import androidx.compose.material3.ButtonDefaults
  import androidx.compose.material3.Card
  import androidx.compose.material3.CardDefaults
@@ -44,30 +30,23 @@ package com.example.littlelemon
  import androidx.compose.material3.MaterialTheme
  import androidx.compose.material3.OutlinedTextField
  import androidx.compose.material3.Text
- import androidx.compose.material3.TextFieldDefaults
  import androidx.compose.runtime.Composable
  import androidx.compose.runtime.LaunchedEffect
  import androidx.compose.runtime.mutableStateOf
  import androidx.compose.runtime.remember
- import androidx.compose.runtime.rememberCoroutineScope
  import androidx.compose.ui.Alignment
  import androidx.compose.ui.unit.dp
  import androidx.compose.ui.Modifier
  import androidx.compose.ui.text.font.FontWeight
- import androidx.lifecycle.LiveData
  import androidx.lifecycle.viewmodel.compose.viewModel
- import kotlinx.coroutines.launch
  import androidx.compose.runtime.*
  import androidx.compose.runtime.livedata.observeAsState
  import androidx.compose.ui.draw.clip
  import androidx.compose.ui.graphics.Color
- import androidx.compose.ui.layout.ContentScale
  import androidx.compose.ui.res.painterResource
- import kotlin.compareTo
- import kotlin.text.category
 
 @Composable
-fun Home(database: MenuDatabase, callback: ()->Unit ) {
+fun Home(callback: () -> Unit) {
 
     val viewModel: MyViewModel = viewModel()
     val databaseMenuItems = viewModel.getAllDatabaseMenuItems().observeAsState(emptyList()).value
@@ -77,7 +56,7 @@ fun Home(database: MenuDatabase, callback: ()->Unit ) {
     }
 
     LaunchedEffect(Unit) {
-        viewModel.fetchMenuDataIfNeeded()
+        viewModel.fetchMenuData()
     }
 
 
@@ -85,40 +64,47 @@ fun Home(database: MenuDatabase, callback: ()->Unit ) {
 
 
 
-    var emp: String = "Ciao"
-
-
-        if (databaseMenuItems.isEmpty())
-            emp = "NO"
-        else
-            emp = "YES"
-
-
-    Log.e("listMenuItemsEmpty", emp)
-    Log.e("listMenuItems", databaseMenuItems.toString())
-
 
 
     Column() {
-      //  Header(navController)
+        Header(callback)
         UpperPanel(){
             searchPhrase.value = it
         }
         LowerPanel(databaseMenuItems, searchPhrase)
     }
 
-//    Column() {
-//        Text(text = "Home")
-//
-//
-//
-//        MenuItems(databaseMenuItems)
-//
-//        Button(onClick = { callback() } ){
-//            Text("Go to profile")
-//        }
-//    }
 
+}
+
+@Composable
+fun Header(callback: () -> Unit){
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp, vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween) {
+        Spacer(modifier = Modifier.width(50.dp))
+        Image(painter = painterResource(id = R.drawable.logo),
+            contentDescription = "Little Lemon Logo",
+            modifier = Modifier
+                .fillMaxWidth(0.65f))
+
+        Box(modifier = Modifier
+            .size(50.dp)
+            .clickable { callback() }){
+            Icon(
+                imageVector = Icons.Default.AccountCircle,
+                contentDescription = "Profile Icon",
+                tint = PrimaryGreen,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(vertical = 2.dp))
+        }
+
+
+    }
 }
 
 @Composable

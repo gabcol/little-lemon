@@ -1,44 +1,54 @@
 package com.example.littlelemon
 
-import android.content.SharedPreferences
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.room.Database
 
 @Composable
-fun NavigationComposable(isUserLoggedIn: Boolean?, sharedPreferences: SharedPreferences, database: MenuDatabase)
+fun NavigationComposable(context: Context)
 {
 
-    val navController = rememberNavController()
-    var destination = "home"
 
-    if (!isUserLoggedIn!!){
-        destination = "onboarding"
+    val sharedPreferences = context.getSharedPreferences("Little Lemon", Context.MODE_PRIVATE)
+    var destination = Onboarding.route
+
+    if (sharedPreferences.getBoolean("userloggedin", false)) {
+        destination = Home.route
     }
+
+    val navController = rememberNavController()
+   // var destination = Home.route
+   //    if (!isUserLoggedIn!!){
+   //        destination = "onboarding"
+   //    }
 
 
     NavHost(navController, startDestination =  destination) {
 
         composable("home") {
 
-                Home(database){
-                    navController.navigate("profile" )
+                Home(){
+                    navController.navigate(Profile.route)
                 }
         }
 
+
+
         composable("onboarding") {
 
-            Onboarding(sharedPreferences, {
-                navController.navigate("home" )
-            } )
+            Onboarding(context) {
+
+                navController.navigate(Home.route)
+            }
 
         }
 
         composable("profile") {
 
-            Profile(sharedPreferences, {navController.navigate("onboarding") }  )
+            Profile(context) { navController.navigate(Onboarding.route) }
+
 
         }
     }

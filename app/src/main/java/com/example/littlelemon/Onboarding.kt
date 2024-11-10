@@ -1,8 +1,7 @@
 package com.example.littlelemon
 
 
-import android.content.SharedPreferences
-import androidx.compose.foundation.Image
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 
@@ -19,9 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,7 +36,7 @@ import kotlinx.serialization.encodeToString
 
 
 @Composable
-fun Onboarding(sharedPreferences: SharedPreferences, callback: ()->Unit ) {
+fun Onboarding(context: Context, callback: ()->Unit ) {
 
     var message = remember { mutableStateOf("") }
 
@@ -68,7 +65,7 @@ fun Onboarding(sharedPreferences: SharedPreferences, callback: ()->Unit ) {
             Button(
                 onClick = {
 
-                    // Validate registration form
+                    //  Validate registration form
                     //  firstName.isBlank()
 
                    if(firstName.value.isEmpty() || lastName.value.isEmpty() || email.value.isEmpty()) {
@@ -79,9 +76,9 @@ fun Onboarding(sharedPreferences: SharedPreferences, callback: ()->Unit ) {
 
                     val userdata = UserProfile(firstName = firstName.value, lastName= lastName.value, email = email.value)
 
-                    val userProfile =  Json.encodeToString(userdata)
+                    val userProfile = Json.encodeToString(userdata)
 
-
+                    val sharedPreferences = context.getSharedPreferences("Little Lemon", Context.MODE_PRIVATE)
 
                     sharedPreferences.edit(commit = true){
                         putBoolean("userloggedin", true)
