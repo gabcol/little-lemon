@@ -1,79 +1,107 @@
 package com.example.littlelemon
 
-
 import android.content.Context
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
- import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.edit
-import com.example.littlelemon.EmailTextFieldSnippet.SimpleEmailField
-import com.example.littlelemon.TextTextFieldSnippet.SimpleTextField
-import com.example.littlelemon.ui.theme.LittleLemonTheme
-
-
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.encodeToString
-
-
 
 @Composable
 fun Onboarding(context: Context, callback: ()->Unit ) {
 
-    var message = remember { mutableStateOf("") }
-
+    val message = remember { mutableStateOf("") }
 
     val firstName = remember { mutableStateOf("") }
     val lastName = remember { mutableStateOf("") }
     val email = remember { mutableStateOf("") }
 
-    Column(
-           // .padding(start = 12.dp, end = 12.dp, top = 16.dp, bottom = 16.dp)
-    ) {
-        Column {
-            OnboardingHeader()
-        }
-        Column(modifier = Modifier
-            .background(Color(0xEE999F97))) {
-            Text(text = "Let's get to know you")
-        }
-        Column {
-            SimpleTextField(label = "First Name", firstName.value) { firstName.value = it }
-            SimpleTextField(label = "Last name" , lastName.value) { lastName.value= it }
-            SimpleEmailField(label = "Last name" , email.value) { email.value = it }
-            // PasswordTextField()
-        }
-        Column {
-            Button(
-                onClick = {
+    val scrollState = rememberScrollState()
 
-                    //  Validate registration form
-                    //  firstName.isBlank()
+        Column(
+            Modifier
+                .fillMaxSize()
+                .padding(20.dp)
+                .verticalScroll(scrollState),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(20.dp))
+        {
+            Row(Modifier.fillMaxWidth(0.6f)) {
+                Image(painter = painterResource(id = R.drawable.logo),
+                    contentDescription = "Little Lemon Logo")
+            }
+            Row(modifier = Modifier
+                .height(150.dp),
+                verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = "Let's get to know you",
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = PrimaryGreen)
+            }
 
-                   if(firstName.value.isEmpty() || lastName.value.isEmpty() || email.value.isEmpty()) {
+            Text(text = "Personal Information",
+                textAlign = TextAlign.Start,
+                modifier = Modifier.fillMaxWidth(),
+                style = MaterialTheme.typography.headlineMedium)
+            OutlinedTextField(
+                value = firstName.value,
+                onValueChange = { firstName.value = it },
+                label = { Text(text = "First Name")},
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth())
 
-                       message.value = "Registration unsuccessful. Please enter all data."
-                       return@Button
-                   }
+            OutlinedTextField(
+                value = lastName.value,
+                onValueChange = { lastName.value = it },
+                label = { Text(text = "Last Name")},
+                singleLine = true,
+                //placeholder = { Text(text = "Doe")},
+                modifier = Modifier.fillMaxWidth())
 
+            OutlinedTextField(
+                value = email.value,
+                onValueChange = { email.value = it },
+                label = { Text(text = "Email")},
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.size(40.dp))
+
+            Button(onClick = {
+                //  Validate registration form
+
+                if(firstName.value.isNotBlank() && lastName.value.isNotBlank() && email.value.isNotBlank() && android.util.Patterns.EMAIL_ADDRESS.matcher(email.value).matches()){
                     val userdata = UserProfile(firstName = firstName.value, lastName= lastName.value, email = email.value)
 
                     val userProfile = Json.encodeToString(userdata)
@@ -85,94 +113,33 @@ fun Onboarding(context: Context, callback: ()->Unit ) {
                         putString("userprofile", userProfile)
                     }
 
-
-
-
                     callback() // go back to home
-                },
+                }
+                else{
+                    message.value = "Registration unsuccessful. Please enter all data."
+
+                    return@Button
+                }
+            },
                 shape = RoundedCornerShape(20.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Yellow),
-               // enabled = (!firstName.value.isEmpty() && !lastName.value.isEmpty() && !email.value.isEmpty())
-            ) {
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
+
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)) {
                 Text(
                     text = "Register",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFF333333)
                 )
+
             }
+
+            Spacer(modifier = Modifier.size(40.dp))
+
+            Text(text = message.value, color = Color(0xFF333333))
+
         }
-        Column {
-            Text(text = message.value)
-        }
-    }
-}
-//
-//private object TextFormattingTextFieldSnippet {
-//
-//    @OptIn(ExperimentalMaterial3Api::class)
-//    @Composable
-//    fun PasswordTextField() {
-//        var password by rememberSaveable { mutableStateOf("") }
-//
-//        TextField(
-//            value = password,
-//            onValueChange = { password = it },
-//            label = { Text("Enter password") },
-//            visualTransformation = PasswordVisualTransformation(),
-//            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
-//        )
-//    }
-//
-//}
-
-private object TextTextFieldSnippet {
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    fun SimpleTextField(label: String, text: String, textUpdate: (String)->Unit) {
-
-
-        TextField(
-            value = text,
-            onValueChange = textUpdate,
-           // label = { Text(label) }
-        )
-    }
-}
-
-private object EmailTextFieldSnippet {
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    fun SimpleEmailField(label: String, email: String, emailUpdate: (String)->Unit) {
-       // var email by remember { mutableStateOf(" ") }
-
-        TextField(
-            value = email,
-            onValueChange = emailUpdate,
-          //  label = { Text(label) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
-        )
-    }
-}
-
-
-
-@Composable
-private fun OnboardingHeader() {
-    Column {
-//        Image(
-//            painter = painterResource(id = R.drawable.logo), //(id = R.drawable.logo),
-//            contentDescription = "Header Image",
-//            modifier = Modifier.clip(RoundedCornerShape(10.dp) )
-//        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun OnboardingPreview2() {
-    LittleLemonTheme {
-      //  Onboarding({})
-    }
 }
 

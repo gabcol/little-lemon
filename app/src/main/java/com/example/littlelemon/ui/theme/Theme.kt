@@ -14,6 +14,12 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.example.littlelemon.Pink40
+import com.example.littlelemon.Pink80
+import com.example.littlelemon.Purple40
+import com.example.littlelemon.Purple80
+import com.example.littlelemon.PurpleGrey40
+import com.example.littlelemon.PurpleGrey80
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -40,7 +46,6 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun LittleLemonTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {

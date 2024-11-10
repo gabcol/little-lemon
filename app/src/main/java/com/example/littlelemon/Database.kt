@@ -40,8 +40,5 @@ interface MenuItemDao   {
     @Query("SELECT (SELECT COUNT(*) FROM MenuItemRoom) == 0")
     fun isEmpty(): Boolean
 
-    @Query("SELECT (SELECT COUNT(*) FROM MenuItemRoom)")
-    fun tablesize(): Int
-
 }
 

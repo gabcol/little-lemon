@@ -14,20 +14,9 @@ import androidx.lifecycle.MutableLiveData
 
 import com.example.littlelemon.ui.theme.LittleLemonTheme
 
-//import io.ktor.client.HttpClient
-//import io.ktor.client.call.body
-//import io.ktor.client.engine.android.Android
-//
-//import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-//import io.ktor.client.request.get
-//import io.ktor.http.ContentType
-//import io.ktor.serialization.kotlinx.json.json
-//import kotlinx.coroutines.launch
 
 class LittleLemon : ComponentActivity() {
     // val myViewModel = MyLittleLemonViewModel()
-
-
 
 
     //SHARED PREFERENCES
@@ -44,10 +33,7 @@ class LittleLemon : ComponentActivity() {
             }
         }
 
-//    fun isUserLoggedIn(): Boolean? {
-//        // check shared preferences
-//        return userLoggedInLiveData.value
-//    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,46 +54,7 @@ class LittleLemon : ComponentActivity() {
             }
         }
 
-    //   var menuItemsFromJason : List<MenuItemFromJason>? = null
-//        this.lifecycleScope.launch(Dispatchers.IO) {
-//            // Perform database operations here
-//
-//            menuItemsFromJason =  fetchMenu()
-//
-//            //myViewModel.addItems(menuItemsFromJason)
-//            val menuItemRooms: List<MenuItemRoom>? = menuItemsFromJason?.map(MenuItemFromJason::toMenuItemRoom)
-//
-//            menuItemRooms?.let {
-//                val dao = database.menuItemDao()
-//                if (dao.isEmpty())
-//                {
-//                    dao.insertAll(*menuItemRooms.toTypedArray())
-//                    Log.e("DBSIZE", dao.tablesize().toString())
-//                }
-//                // Update UI on the main thread
-//                // withContext(Dispatchers.Main) {
-//                // Update UI elements with the data
-//                // }
-//            }
-//        }
-
     }
-
-// DB
-//    val database by lazy {
-//        Room.databaseBuilder(this, MenuDatabase::class.java, "database").build()
-//    }
-
-
-
-
-
-
-
-
-
-
-
 }
 
 @Preview(showBackground = true)
