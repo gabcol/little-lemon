@@ -99,4 +99,7 @@ dependencies {
 
     implementation("androidx.compose.runtime:runtime-livedata:1.7.5")
 
+
+    implementation("com.github.bumptech.glide:compose:1.0.0-alpha.1")
+
 }

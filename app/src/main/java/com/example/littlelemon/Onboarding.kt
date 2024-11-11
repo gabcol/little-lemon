@@ -2,6 +2,7 @@ package com.example.littlelemon
 
 import android.content.Context
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -47,31 +49,36 @@ fun Onboarding(context: Context, callback: ()->Unit ) {
 
     val scrollState = rememberScrollState()
 
-        Column(
-            Modifier
-                .fillMaxSize()
-                .padding(20.dp)
-                .verticalScroll(scrollState),
+    Column(
+        Modifier
+            .fillMaxSize()
+            .padding(20.dp)
+            .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(20.dp))
         {
-            Row(Modifier.fillMaxWidth(0.6f)) {
+            Row(Modifier.fillMaxWidth(1.0f).height(25.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
                 Image(painter = painterResource(id = R.drawable.logo),
-                    contentDescription = "Little Lemon Logo")
+                    contentDescription = "Little Lemon Logo", modifier = Modifier.scale(2.0f))
             }
-            Row(modifier = Modifier
-                .height(150.dp),
-                verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = "Let's get to know you",
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = PrimaryGreen)
+            Row(modifier = Modifier.fillMaxWidth(1.0f)
+                .height(150.dp).background(PrimaryGreen),
+                verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+
+
+
+                    Text(
+                        text = "Let's get to know you",
+                        style = MaterialTheme.typography.headlineLarge,
+                        color = HighlightGray)
+
             }
 
             Text(text = "Personal Information",
                 textAlign = TextAlign.Start,
                 modifier = Modifier.fillMaxWidth(),
                 style = MaterialTheme.typography.headlineMedium)
+
             OutlinedTextField(
                 value = firstName.value,
                 onValueChange = { firstName.value = it },
@@ -84,7 +91,6 @@ fun Onboarding(context: Context, callback: ()->Unit ) {
                 onValueChange = { lastName.value = it },
                 label = { Text(text = "Last Name")},
                 singleLine = true,
-                //placeholder = { Text(text = "Doe")},
                 modifier = Modifier.fillMaxWidth())
 
             OutlinedTextField(
@@ -99,9 +105,10 @@ fun Onboarding(context: Context, callback: ()->Unit ) {
             Spacer(modifier = Modifier.size(40.dp))
 
             Button(onClick = {
-                //  Validate registration form
 
+                //  Validate registration form
                 if(firstName.value.isNotBlank() && lastName.value.isNotBlank() && email.value.isNotBlank() && android.util.Patterns.EMAIL_ADDRESS.matcher(email.value).matches()){
+
                     val userdata = UserProfile(firstName = firstName.value, lastName= lastName.value, email = email.value)
 
                     val userProfile = Json.encodeToString(userdata)

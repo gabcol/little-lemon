@@ -4,29 +4,21 @@ import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.content.edit
-import androidx.navigation.NavHostController
 import kotlinx.serialization.json.Json
 
 @Composable
@@ -68,9 +60,9 @@ fun Profile(context: Context, callback: ()->Unit ) {
             .verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(20.dp)) {
-        Row(Modifier.fillMaxWidth(0.6f)) {
+        Row(Modifier.fillMaxWidth(1.0f).height(25.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center)  {
             Image(painter = painterResource(id = R.drawable.logo),
-                contentDescription = "Little Lemon Logo")
+                contentDescription = "Little Lemon Logo", modifier = Modifier.scale(2.0f))
         }
 
         Text(text = "Personal Information",
@@ -80,12 +72,11 @@ fun Profile(context: Context, callback: ()->Unit ) {
         OutlinedTextField(
             enabled = false,
             readOnly = true,
-            value = firstName.value!!,
+            value = firstName.value,
             onValueChange ={},
             label = { Text(text = "First Name")},
             singleLine = true,
             placeholder = { Text(text = "Your name")},
-            //color =  OutlinedTextFieldDefaults.colors(disabledBorderColor = PrimaryGreen, disabledLabelColor = PrimaryGreen ),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -97,7 +88,6 @@ fun Profile(context: Context, callback: ()->Unit ) {
             label = { Text(text = "Last Name")},
             singleLine = true,
             placeholder = { Text(text = "Your surname")},
-           // color =  OutlinedTextFieldDefaults.colors(disabledBorderColor = PrimaryGreen, disabledLabelColor = PrimaryGreen ),
             modifier = Modifier.fillMaxWidth())
 
         OutlinedTextField(
@@ -108,7 +98,6 @@ fun Profile(context: Context, callback: ()->Unit ) {
             label = { Text(text = "Email")},
             singleLine = true,
             placeholder = { Text(text = "your email")},
-           // color =  OutlinedTextFieldDefaults.colors(disabledBorderColor = PrimaryGreen, disabledLabelColor = PrimaryGreen ),
             modifier = Modifier.fillMaxWidth())
 
         Spacer(modifier = Modifier.size(40.dp))
